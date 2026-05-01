@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Taschenrechner</title>
+</head>
+<body>
+  <h1>Mein Taschenrechner</h1>
+
+  <input id="zahl1" type="number" placeholder="Zahl 1">
+  <input id="zahl2" type="number" placeholder="Zahl 2">
+
+  <button onclick="addieren()">Addieren</button>
+
+  <p>Ergebnis: <span id="ergebnis">-</span></p>
+
+  <script>
+    function addieren() {
+      const zahl1 = Number(document.getElementById("zahl1").value);
+      const zahl2 = Number(document.getElementById("zahl2").value);
+
+      const ergebnis = zahl1 + zahl2;
+
+      document.getElementById("ergebnis").textContent = ergebnis;
+    }
+  </script>
+</body>
+</html>
