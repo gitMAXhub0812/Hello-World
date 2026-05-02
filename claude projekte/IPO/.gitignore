@@ -1,4 +1,5 @@
 .env
 ipo_data.json
+backtest_results.json
 __pycache__/
 *.pyc

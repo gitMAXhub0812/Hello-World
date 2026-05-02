@@ -2,3 +2,4 @@ requests
 win11toast
 python-dotenv
 python-dateutil
+yfinance
