@@ -1,0 +1,65 @@
+[
+  {
+    "symbol": "RIKU",
+    "name": "RIKU DINING GROUP Ltd",
+    "date": "5/15/2026",
+    "exchange": "NASDAQ Capital",
+    "price": "4.00-6.00",
+    "shares": "5,000,000",
+    "status": "upcoming"
+  },
+  {
+    "symbol": "BWGC",
+    "name": "BW Industrial Holdings Inc.",
+    "date": "5/12/2026",
+    "exchange": "NYSE MKT",
+    "price": "6.00-7.00",
+    "shares": "2,625,000",
+    "status": "upcoming"
+  },
+  {
+    "symbol": "SUJA",
+    "name": "SUJA LIFE, INC.",
+    "date": "5/07/2026",
+    "exchange": "NASDAQ Global Select",
+    "price": "21.00-24.00",
+    "shares": "8,888,889",
+    "status": "upcoming"
+  },
+  {
+    "symbol": "HAWK",
+    "name": "HawkEye 360, Inc.",
+    "date": "5/07/2026",
+    "exchange": "NYSE",
+    "price": "24.00-26.00",
+    "shares": "16,000,000",
+    "status": "upcoming"
+  },
+  {
+    "symbol": "REA",
+    "name": "Rare Earths Americas, Inc.",
+    "date": "5/06/2026",
+    "exchange": "NYSE MKT",
+    "price": "17.00-19.00",
+    "shares": "2,777,777",
+    "status": "upcoming"
+  },
+  {
+    "symbol": "QLEPU",
+    "name": "Quantum Leap Acquisition Corp",
+    "date": "5/01/2026",
+    "exchange": "NYSE",
+    "price": "10.00",
+    "shares": "20,000,000",
+    "status": "upcoming"
+  },
+  {
+    "symbol": "MTNEU",
+    "name": "CH4 Natural Solutions Corp",
+    "date": "5/01/2026",
+    "exchange": "NYSE",
+    "price": "10.00",
+    "shares": "20,000,000",
+    "status": "upcoming"
+  }
+]

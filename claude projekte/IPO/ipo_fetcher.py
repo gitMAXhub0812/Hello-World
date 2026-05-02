@@ -1,27 +1,48 @@
 import json
 import requests
-from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
-from config import FINNHUB_API_KEY, DATA_FILE, LOOKAHEAD_MONTHS
+from datetime import datetime
+from config import DATA_FILE
+
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/124.0.0.0 Safari/537.36"
+    )
+}
+
+
+def _normalize(row: dict) -> dict:
+    """Bringt Nasdaq-Felder in ein einheitliches Format."""
+    return {
+        "symbol":   row.get("proposedTickerSymbol", "?"),
+        "name":     row.get("companyName", "N/A"),
+        "date":     row.get("expectedPriceDate", "N/A"),
+        "exchange": row.get("proposedExchange", "N/A"),
+        "price":    row.get("proposedSharePrice", "N/A"),
+        "shares":   row.get("sharesOffered", "N/A"),
+        "status":   row.get("_status", "upcoming"),
+    }
 
 
 def fetch_ipos() -> list[dict]:
-    """Holt bevorstehende IPOs von der Finnhub API."""
-    if not FINNHUB_API_KEY:
-        raise ValueError(
-            "Kein API-Key gefunden. Bitte .env Datei anlegen (siehe .env.example)."
-        )
+    """Holt bevorstehende und kürzlich gepreiste IPOs von der Nasdaq-API (kein Key nötig)."""
+    url = "https://api.nasdaq.com/api/ipo/calendar"
+    params = {"date": datetime.now().strftime("%Y-%m")}
 
-    date_from = datetime.today().strftime("%Y-%m-%d")
-    date_to   = (datetime.today() + relativedelta(months=LOOKAHEAD_MONTHS)).strftime("%Y-%m-%d")
-
-    url = "https://finnhub.io/api/v1/calendar/ipo"
-    params = {"from": date_from, "to": date_to, "token": FINNHUB_API_KEY}
-
-    resp = requests.get(url, params=params, timeout=10)
+    resp = requests.get(url, headers=HEADERS, params=params, timeout=10)
     resp.raise_for_status()
+    data = resp.json().get("data", {})
 
-    return resp.json().get("ipoCalendar", [])
+    upcoming = data.get("upcoming", {}).get("upcomingTable", {}).get("rows", [])
+    priced   = data.get("priced",   {}).get("pricedTable",   {}).get("rows", [])
+
+    for row in upcoming:
+        row["_status"] = "upcoming"
+    for row in priced:
+        row["_status"] = "priced"
+
+    return [_normalize(r) for r in upcoming + priced]
 
 
 def load_stored_ipos() -> list[dict]:
