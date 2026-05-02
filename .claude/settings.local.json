@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(start *)",
+      "PowerShell($input = [System.Text.Encoding]::ASCII.GetBytes\\(\"3`n5`n\"\\); $process = Start-Process python -ArgumentList \"`\"C:\\\\Users\\\\msieb\\\\OneDrive\\\\Dokumente\\\\Coding\\\\Visual Studio Code\\\\claude projekte\\\\addition.py`\"\" -RedirectStandardInput \"NUL\" -NoNewWindow -Wait -PassThru; $process.ExitCode)"
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+🟢 Schritt 2: Code einfügen
+<!DOCTYPE html>
+<html>
+<head>
+  <title>To-Do Liste</title>
+</head>
+<body>
+
+  <h1>Meine To-Do Liste</h1>
+
+  <input id="eingabe" placeholder="Neue Aufgabe">
+  <button onclick="hinzufuegen()">Hinzufügen</button>
+
+  <ul id="liste"></ul>
+
+  <script>
+    function hinzufuegen() {
+      const text = document.getElementById("eingabe").value;
+
+      if (text === "") return;
+
+      const li = document.createElement("li");
+      li.textContent = text;
+
+      document.getElementById("liste").appendChild(li);
+
+      document.getElementById("eingabe").value = "";
+    }
+  </script>
+
+</body>
+</html>
