@@ -1,7 +1,7 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from config import EMAIL_SENDER, EMAIL_PASSWORD, EMAIL_RECIPIENT
+from config import EMAIL_SENDER, EMAIL_PASSWORD, EMAIL_RECIPIENT, SMTP_HOST, SMTP_PORT
 
 try:
     from plyer import notification as _plyer_notification
@@ -48,7 +48,8 @@ def send_email(new_ipos: list[dict]) -> bool:
     msg.attach(MIMEText(body, "plain", "utf-8"))
 
     try:
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=10) as server:
+            server.starttls()
             server.login(EMAIL_SENDER, EMAIL_PASSWORD)
             server.sendmail(EMAIL_SENDER, EMAIL_RECIPIENT, msg.as_string())
         return True
