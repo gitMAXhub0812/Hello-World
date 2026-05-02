@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 load_dotenv(Path(__file__).parent / ".env")
-POLYGON_API_KEY = os.getenv("POLYGON_API_KEY", "")
+MASSIVE_API_KEY = os.getenv("MASSIVE_API_KEY", "")
 
 HEADERS = {
     "User-Agent": (
@@ -74,27 +74,29 @@ def _parse_date(raw: str) -> str | None:
 
 def fetch_polygon_bars(symbol: str, day: date) -> list[dict] | None:
     """
-    Holt 1-Minuten-Bars für einen Tag von Polygon.io.
+    Holt 1-Minuten-Bars für einen Tag von Massive.com (ehemals Polygon.io).
     Gibt eine Liste von {open, high, low, close, time} zurück oder None.
     """
-    if not POLYGON_API_KEY:
+    if not MASSIVE_API_KEY:
         return None
 
     date_str = day.strftime("%Y-%m-%d")
     url = (
-        f"https://api.polygon.io/v2/aggs/ticker/{symbol}/range/1/minute"
+        f"https://api.massive.com/v2/aggs/ticker/{symbol}/range/1/minute"
         f"/{date_str}/{date_str}"
     )
+    headers = {
+        "Authorization": f"Bearer {MASSIVE_API_KEY}",
+    }
     params = {
         "adjusted": "true",
         "sort":     "asc",
         "limit":    "50000",
-        "apiKey":   POLYGON_API_KEY,
     }
     try:
-        resp = requests.get(url, params=params, timeout=10)
-        if resp.status_code == 403:
-            return None  # Key ungültig oder Plan zu niedrig
+        resp = requests.get(url, headers=headers, params=params, timeout=10)
+        if resp.status_code in (401, 403):
+            return None
         resp.raise_for_status()
         data    = resp.json()
         results = data.get("results", [])
