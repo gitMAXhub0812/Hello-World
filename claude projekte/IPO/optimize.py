@@ -11,9 +11,8 @@ import argparse
 import json
 import sys
 import warnings
-import yfinance as yf
-from datetime import datetime, date, timedelta
-from data_collector import fetch_historical_ipos
+from datetime import datetime
+from data_collector import fetch_historical_ipos, fetch_intraday_bars_full
 
 warnings.filterwarnings("ignore")
 
@@ -140,7 +139,7 @@ def run_optimization(months: int) -> None:
         sys.stdout.write(f"  {sym:<8} {ipo['name'][:30]:<32} ... ")
         sys.stdout.flush()
 
-        bars, interval = fetch_intraday_bars(sym, ipo["date"])
+        bars, interval = fetch_intraday_bars_full(sym, ipo["date"])
         if not bars:
             print("keine Daten")
             skipped += 1
