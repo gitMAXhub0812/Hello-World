@@ -19,7 +19,7 @@ from data_collector import fetch_historical_ipos, fetch_first_day_prices
 
 # ── Konfiguration ──────────────────────────────────────────────────────────────
 DEFAULT_MONTHS   = 6
-DEFAULT_SIZE_EUR = 1_000
+DEFAULT_SIZE_EUR = 400
 SPREAD_PCT       = 0.003   # 0.3 % Spread (Kauf + Verkauf)
 FEE_EUR          = 0.0     # Gebühr pro Trade
 

@@ -25,7 +25,7 @@ from data_collector import fetch_historical_ipos
 from notifier import send_desktop_notification
 
 # ── Konfiguration ──────────────────────────────────────────────────────────────
-POSITION_EUR    = 800      # € pro Trade
+POSITION_EUR    = 400      # € pro Trade
 STOP_LOSS_PCT   = 0.05     # 5 % Stop-Loss
 HOLD_MINUTES    = 10       # Haltedauer in Minuten
 FILTER_MIN      = 20.0     # Mindestpreis IPO-Aktie
