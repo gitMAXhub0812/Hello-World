@@ -122,8 +122,8 @@ class SpeechApp:
         mics = []
         self.mic_indices = {}
 
-        # Prefer WASAPI, then DirectSound, then MME
-        api_priority = {"Windows WASAPI": 0, "Windows DirectSound": 1, "MME": 2}
+        # MME is most compatible with custom sample rates on Windows
+        api_priority = {"MME": 0, "Windows DirectSound": 1, "Windows WASAPI": 2}
 
         candidates = []
         for i, dev in enumerate(devices):
