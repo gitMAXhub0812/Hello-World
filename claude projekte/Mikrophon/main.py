@@ -118,14 +118,43 @@ class SpeechApp:
         if not SD_AVAILABLE:
             return
         devices = sd.query_devices()
+        host_apis = sd.query_hostapis()
         mics = []
         self.mic_indices = {}
+
+        # Prefer WASAPI, then DirectSound, then MME
+        api_priority = {"Windows WASAPI": 0, "Windows DirectSound": 1, "MME": 2}
+
+        candidates = []
         for i, dev in enumerate(devices):
             if dev["max_input_channels"] > 0:
-                label = f"{i}: {dev['name']}"
-                mics.append(label)
-                self.mic_indices[label] = i
+                api_name = host_apis[dev["hostapi"]]["name"]
+                priority = api_priority.get(api_name, 99)
+                candidates.append((priority, dev["name"], i, api_name))
+
+        # Deduplicate: keep only the highest-priority entry per device name
+        seen = {}
+        for priority, name, idx, api_name in sorted(candidates):
+            if name not in seen:
+                seen[name] = (idx, api_name)
+
+        for name, (idx, api_name) in seen.items():
+            label = f"{name}  [{api_name}]"
+            mics.append(label)
+            self.mic_indices[label] = idx
+
         self.mic_combo["values"] = mics
+
+        # Pre-select the system default input device
+        try:
+            default_idx = sd.default.device[0]
+            for label, idx in self.mic_indices.items():
+                if idx == default_idx:
+                    self.mic_combo.set(label)
+                    return
+        except Exception:
+            pass
+
         if mics:
             self.mic_combo.current(0)
 
