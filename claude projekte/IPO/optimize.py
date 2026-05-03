@@ -22,7 +22,7 @@ SPREAD_PCT      = 0.003
 FILTER_MIN      = 20.0
 FILTER_MAX      = 50.0
 STOP_LOSS_PCT   = -5.0
-POSITION_EUR    = 1_000
+POSITION_EUR    = 2_000
 # ──────────────────────────────────────────────────────────────────────────────
 
 

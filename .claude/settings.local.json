@@ -6,7 +6,8 @@
       "WebFetch(domain:massive.com)",
       "WebSearch",
       "WebFetch(domain:github.com)",
-      "Bash(python -c ' *)"
+      "Bash(python -c ' *)",
+      "Bash(\"C:\\\\Users\\\\msieb\\\\AppData\\\\Local\\\\Python\\\\bin\\\\python.exe\" optimize.py --months 24)"
     ]
   },
   "hooks": {
