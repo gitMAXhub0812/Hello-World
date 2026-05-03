@@ -242,6 +242,7 @@ class SpeechApp:
                     self.status_var.set(f"Fehler: {text}")
                     self.status_label.config(fg="#c0392b")
                     self._stop_recording()
+                    messagebox.showerror("Fehler bei der Aufnahme", text)
         except Exception:
             pass
         self.root.after(80, self._poll_queue)
