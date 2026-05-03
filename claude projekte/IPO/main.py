@@ -6,7 +6,7 @@ Verwendung: python main.py
 import sys
 from datetime import datetime
 from ipo_fetcher import fetch_ipos, load_stored_ipos, merge_and_save
-from notifier import notify_new_ipos
+from notifier import notify_new_ipos, notify_daily_summary
 
 
 def _ipo_line(ipo: dict) -> str:
@@ -39,13 +39,16 @@ def check_now() -> None:
         fetched  = fetch_ipos()
         new_ipos = merge_and_save(fetched)
 
+        all_stored = load_stored_ipos()
+        notify_daily_summary(all_stored)
+
         if new_ipos:
             print(f"\n{len(new_ipos)} neuer Börsengang gefunden!")
             print_ipos(new_ipos, "Neue IPOs")
             notify_new_ipos(new_ipos)
         else:
             print("Keine neuen IPOs seit der letzten Prüfung.")
-            print(f"Gesamt bekannte IPOs: {len(load_stored_ipos())}")
+            print(f"Gesamt bekannte IPOs: {len(all_stored)}")
     except ValueError as e:
         print(f"\nKonfigurationsfehler: {e}")
     except Exception as e:
