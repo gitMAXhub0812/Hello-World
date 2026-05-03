@@ -6,10 +6,10 @@ import json
 import os
 
 try:
-    import pyaudio
-    PYAUDIO_AVAILABLE = True
+    import sounddevice as sd
+    SD_AVAILABLE = True
 except ImportError:
-    PYAUDIO_AVAILABLE = False
+    SD_AVAILABLE = False
 
 try:
     from vosk import Model, KaldiRecognizer
@@ -18,6 +18,8 @@ except ImportError:
     VOSK_AVAILABLE = False
 
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "model")
+SAMPLERATE = 16000
+BLOCKSIZE = 8000
 
 
 class SpeechApp:
@@ -41,7 +43,6 @@ class SpeechApp:
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(2, weight=1)
 
-        # --- Header ---
         header = tk.Frame(self.root, bg="#2c3e50")
         header.grid(row=0, column=0, sticky="ew")
         tk.Label(
@@ -49,7 +50,6 @@ class SpeechApp:
             font=("Segoe UI", 16, "bold"), bg="#2c3e50", fg="white", pady=10
         ).pack()
 
-        # --- Mikrofon-Auswahl ---
         mic_frame = tk.Frame(self.root, pady=8)
         mic_frame.grid(row=1, column=0, sticky="ew", padx=15)
         mic_frame.columnconfigure(1, weight=1)
@@ -63,7 +63,6 @@ class SpeechApp:
             cursor="hand2", command=self._load_microphones
         ).grid(row=0, column=2, padx=(6, 0))
 
-        # --- Textfeld ---
         text_frame = tk.Frame(self.root)
         text_frame.grid(row=2, column=0, sticky="nsew", padx=15, pady=(0, 5))
         text_frame.columnconfigure(0, weight=1)
@@ -77,11 +76,9 @@ class SpeechApp:
         self.text_area.tag_config("partial", foreground="#888888")
         scrollbar = ttk.Scrollbar(text_frame, orient=tk.VERTICAL, command=self.text_area.yview)
         self.text_area.configure(yscrollcommand=scrollbar.set)
-
         self.text_area.grid(row=0, column=0, sticky="nsew")
         scrollbar.grid(row=0, column=1, sticky="ns")
 
-        # --- Statuszeile ---
         self.status_var = tk.StringVar(value="Bereit.")
         self.status_label = tk.Label(
             self.root, textvariable=self.status_var,
@@ -89,7 +86,6 @@ class SpeechApp:
         )
         self.status_label.grid(row=3, column=0, sticky="ew", padx=15)
 
-        # --- Buttons ---
         btn_frame = tk.Frame(self.root, pady=10)
         btn_frame.grid(row=4, column=0)
 
@@ -119,33 +115,30 @@ class SpeechApp:
         self._load_microphones()
 
     def _load_microphones(self):
-        if not PYAUDIO_AVAILABLE:
+        if not SD_AVAILABLE:
             return
-        p = pyaudio.PyAudio()
+        devices = sd.query_devices()
         mics = []
         self.mic_indices = {}
-        for i in range(p.get_device_count()):
-            info = p.get_device_info_by_index(i)
-            if info["maxInputChannels"] > 0:
-                label = f"{i}: {info['name']}"
+        for i, dev in enumerate(devices):
+            if dev["max_input_channels"] > 0:
+                label = f"{i}: {dev['name']}"
                 mics.append(label)
                 self.mic_indices[label] = i
-        p.terminate()
         self.mic_combo["values"] = mics
         if mics:
             self.mic_combo.current(0)
 
     def _check_dependencies(self):
         problems = []
-        if not PYAUDIO_AVAILABLE:
-            problems.append("PyAudio fehlt")
+        if not SD_AVAILABLE:
+            problems.append("sounddevice fehlt")
         if not VOSK_AVAILABLE:
             problems.append("Vosk fehlt")
         if not os.path.isdir(MODEL_PATH):
-            problems.append(f"Modell-Ordner '{MODEL_PATH}' nicht gefunden")
+            problems.append("Modell-Ordner 'model' nicht gefunden")
         if problems:
-            msg = "⚠ " + "  |  ".join(problems)
-            self.status_var.set(msg)
+            self.status_var.set("⚠ " + "  |  ".join(problems))
             self.status_label.config(fg="#c0392b")
             self.record_btn.config(state=tk.DISABLED)
 
@@ -172,22 +165,12 @@ class SpeechApp:
     def _audio_loop(self):
         try:
             model = Model(MODEL_PATH)
-            rec = KaldiRecognizer(model, 16000)
+            rec = KaldiRecognizer(model, SAMPLERATE)
 
-            p = pyaudio.PyAudio()
             device_index = self.mic_indices.get(self.mic_var.get())
-            stream = p.open(
-                format=pyaudio.paInt16,
-                channels=1,
-                rate=16000,
-                input=True,
-                input_device_index=device_index,
-                frames_per_buffer=8000,
-            )
-            stream.start_stream()
 
-            while self.is_recording:
-                data = stream.read(4000, exception_on_overflow=False)
+            def callback(indata, frames, time_info, status):
+                data = bytes(indata)
                 if rec.AcceptWaveform(data):
                     result = json.loads(rec.Result())
                     text = result.get("text", "").strip()
@@ -198,13 +181,20 @@ class SpeechApp:
                     text = partial.get("partial", "").strip()
                     self.text_queue.put(("partial", text))
 
+            with sd.RawInputStream(
+                samplerate=SAMPLERATE,
+                blocksize=BLOCKSIZE,
+                device=device_index,
+                dtype="int16",
+                channels=1,
+                callback=callback,
+            ):
+                while self.is_recording:
+                    sd.sleep(100)
+
             final = json.loads(rec.FinalResult()).get("text", "").strip()
             if final:
                 self.text_queue.put(("final", final))
-
-            stream.stop_stream()
-            stream.close()
-            p.terminate()
 
         except Exception as exc:
             self.text_queue.put(("error", str(exc)))

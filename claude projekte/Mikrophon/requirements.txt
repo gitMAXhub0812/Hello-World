@@ -1,2 +1,2 @@
 vosk
-pyaudio
+sounddevice
