@@ -120,9 +120,9 @@ class SpeechApp:
         devices = sd.query_devices()
         host_apis = sd.query_hostapis()
         mics = []
-        self.mic_indices = {}
+        self.mic_device_indices = []  # parallel list to mics
 
-        # MME is most compatible with custom sample rates on Windows
+        # MME is most compatible with arbitrary sample rates on Windows
         api_priority = {"MME": 0, "Windows DirectSound": 1, "Windows WASAPI": 2}
 
         candidates = []
@@ -132,25 +132,23 @@ class SpeechApp:
                 priority = api_priority.get(api_name, 99)
                 candidates.append((priority, dev["name"], i, api_name))
 
-        # Deduplicate: keep only the highest-priority entry per device name
         seen = {}
         for priority, name, idx, api_name in sorted(candidates):
             if name not in seen:
                 seen[name] = (idx, api_name)
 
         for name, (idx, api_name) in seen.items():
-            label = f"{name}  [{api_name}]"
-            mics.append(label)
-            self.mic_indices[label] = idx
+            mics.append(f"{name}  [{api_name}]")
+            self.mic_device_indices.append(idx)
 
         self.mic_combo["values"] = mics
 
         # Pre-select the system default input device
         try:
             default_idx = sd.default.device[0]
-            for label, idx in self.mic_indices.items():
-                if idx == default_idx:
-                    self.mic_combo.set(label)
+            for pos, dev_idx in enumerate(self.mic_device_indices):
+                if dev_idx == default_idx:
+                    self.mic_combo.current(pos)
                     return
         except Exception:
             pass
@@ -196,7 +194,12 @@ class SpeechApp:
             model = Model(MODEL_PATH)
             rec = KaldiRecognizer(model, SAMPLERATE)
 
-            device_index = self.mic_indices.get(self.mic_var.get())
+            combo_idx = self.mic_combo.current()
+            device_index = (
+                self.mic_device_indices[combo_idx]
+                if 0 <= combo_idx < len(self.mic_device_indices)
+                else None
+            )
 
             def callback(indata, frames, time_info, status):
                 data = bytes(indata)
@@ -210,16 +213,27 @@ class SpeechApp:
                     text = partial.get("partial", "").strip()
                     self.text_queue.put(("partial", text))
 
-            with sd.RawInputStream(
-                samplerate=SAMPLERATE,
-                blocksize=BLOCKSIZE,
-                device=device_index,
-                dtype="int16",
-                channels=1,
-                callback=callback,
-            ):
-                while self.is_recording:
-                    sd.sleep(100)
+            # Try selected device first, then fall back to system default
+            for dev in ([device_index, None] if device_index is not None else [None]):
+                try:
+                    with sd.RawInputStream(
+                        samplerate=SAMPLERATE,
+                        blocksize=BLOCKSIZE,
+                        device=dev,
+                        dtype="int16",
+                        channels=1,
+                        callback=callback,
+                    ):
+                        if dev != device_index:
+                            self.text_queue.put(("info", "Fallback auf Standard-Mikrofon"))
+                        while self.is_recording:
+                            sd.sleep(100)
+                    break
+                except Exception as e:
+                    if dev is None:
+                        raise
+                    # Selected device failed — retry with system default
+                    continue
 
             final = json.loads(rec.FinalResult()).get("text", "").strip()
             if final:
@@ -238,6 +252,8 @@ class SpeechApp:
                     self._render(self.confirmed_text, partial="")
                 elif kind == "partial":
                     self._render(self.confirmed_text, partial=text)
+                elif kind == "info":
+                    self.status_var.set(f"ℹ {text}")
                 elif kind == "error":
                     self.status_var.set(f"Fehler: {text}")
                     self.status_label.config(fg="#c0392b")
