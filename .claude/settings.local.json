@@ -9,7 +9,10 @@
       "Bash(python -c ' *)",
       "Bash(\"C:\\\\Users\\\\msieb\\\\AppData\\\\Local\\\\Python\\\\bin\\\\python.exe\" optimize.py --months 24)",
       "PowerShell(Select-String -Path \"C:\\\\Users\\\\msieb\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-msieb-OneDrive-Dokumente-Coding-Visual-Studio-Code\\\\7371bc54-fdec-4381-823e-48c8b183a52c\\\\tasks\\\\baumzxa8y.output\" -Pattern \"EOD|Tagesende|Avg|avg\" | Select-Object -Last 20 | ForEach-Object { $_.Line })",
-      "WebFetch(domain:hno-praxis-rothenburg.de)"
+      "WebFetch(domain:hno-praxis-rothenburg.de)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ]
   },
   "hooks": {
