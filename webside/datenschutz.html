@@ -14,8 +14,12 @@
     <header class="header" id="header">
         <div class="container header__inner">
             <a href="index.html" class="header__logo">
-                <span class="logo-title">HNO Gemeinschaftspraxis</span>
-                <span class="logo-sub">Rothenburg ob der Tauber</span>
+                <img src="assets/images/logo.png" alt="HNO Gemeinschaftspraxis" class="header__logo-img"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <span class="header__logo-fallback">
+                    <span class="logo-title">HNO Gemeinschaftspraxis</span>
+                    <span class="logo-sub">Rothenburg ob der Tauber</span>
+                </span>
             </a>
             <a href="index.html" class="btn btn--outline btn--sm">&#8592; Zurück zur Startseite</a>
         </div>
