@@ -1,6 +1,20 @@
 // Dynamic footer year
 document.getElementById('year').textContent = new Date().getFullYear();
 
+// ── Hero Slider ──────────────────────────────────────────────
+// Wechselt alle 6 Sekunden mit sanftem Fade.
+// Neue Bilder: einfach weiteres <div class="hero__slide"> in #heroSlides ergänzen.
+(function () {
+    const slides = document.querySelectorAll('#heroSlides .hero__slide');
+    if (slides.length < 2) return;
+    let current = 0;
+    setInterval(() => {
+        slides[current].classList.remove('hero__slide--active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('hero__slide--active');
+    }, 6000);
+})();
+
 // Mobile nav toggle
 const navToggle = document.getElementById('navToggle');
 const nav       = document.getElementById('nav');

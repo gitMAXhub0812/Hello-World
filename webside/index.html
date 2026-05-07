@@ -46,7 +46,11 @@
      HERO
 ═══════════════════════════════════════════ -->
 <section class="hero" id="home">
-    <div class="hero__bg" style="background-image:url('assets/images/hero.jpg');"></div>
+    <!-- Hero Slider – neue Bilder einfach als weiteres <div class="hero__slide"> ergänzen -->
+    <div class="hero__slides" id="heroSlides">
+        <div class="hero__slide hero__slide--active" style="background-image:url('assets/images/hero.jpg');"></div>
+        <div class="hero__slide" style="background-image:url('assets/images/rothenburg.jpg');"></div>
+    </div>
     <div class="hero__overlay"></div>
     <div class="container hero__content">
         <p class="hero__eyebrow">Fachärzte für HNO-Heilkunde &amp; Allergologie</p>
@@ -95,7 +99,7 @@
                 </div>
             </div>
             <figure class="split__image">
-                <img src="assets/images/rezeption.jpg" alt="Empfangsbereich der HNO-Gemeinschaftspraxis Rothenburg" loading="lazy">
+                <img src="assets/images/Anmeldung.png" alt="Empfangsbereich der HNO-Gemeinschaftspraxis Rothenburg" loading="lazy">
             </figure>
         </div>
     </div>
@@ -105,7 +109,7 @@
      PHILOSOPHIE
 ═══════════════════════════════════════════ -->
 <section class="philosophie" id="philosophie">
-    <div class="philosophie__bg" style="background-image:url('assets/images/aerztehaus.jpg');"></div>
+    <div class="philosophie__bg" style="background-image:url('assets/images/aerztehaus.png');"></div>
     <div class="philosophie__overlay"></div>
     <div class="container philosophie__content">
         <span class="eyebrow eyebrow--light">Unsere Philosophie</span>
@@ -230,25 +234,32 @@
     </div>
     <div class="gallery">
         <figure class="gallery__item gallery__item--wide">
-            <img src="assets/images/rezeption-bereich.jpg" alt="Blick vom Empfang in den Behandlungsbereich" loading="lazy">
+            <img src="assets/images/rezeption-bereich.png" alt="Blick vom Empfang in den Behandlungsbereich" loading="lazy">
             <figcaption>Empfang &amp; Untersuchungsbereich</figcaption>
         </figure>
         <figure class="gallery__item">
-            <img src="assets/images/op.jpg" alt="Operationsbereich" loading="lazy">
+            <img src="assets/images/warteraum.png" alt="Warteraum" loading="lazy">
+            <figcaption>Warteraum</figcaption>
+        </figure>
+        <figure class="gallery__item">
+            <img src="assets/images/op.png" alt="Operationsbereich" loading="lazy">
             <figcaption>Operationsbereich</figcaption>
         </figure>
         <figure class="gallery__item">
-            <img src="assets/images/hirnstamm.jpg" alt="Audiologische Diagnostik" loading="lazy">
+            <img src="assets/images/audiometrie.png" alt="Audiometrie" loading="lazy">
+            <figcaption>Audiometrie</figcaption>
+        </figure>
+        <figure class="gallery__item">
+            <img src="assets/images/hirnstamm.png" alt="Hirnstammaudiometrie" loading="lazy">
             <figcaption>Hirnstammaudiometrie</figcaption>
         </figure>
         <figure class="gallery__item">
-            <img src="assets/images/sterilisation.jpg" alt="Sterilisationsbereich" loading="lazy">
+            <img src="assets/images/sterilisation.png" alt="Sterilisation" loading="lazy">
             <figcaption>Sterilisation</figcaption>
         </figure>
-        <figure class="gallery__item">
-            <img src="assets/images/audiometrie.jpg" alt="Audiometrie-Kabine" loading="lazy">
-            <figcaption>Audiometrie</figcaption>
-        </figure>
+    </div>
+    <div class="container">
+        <p class="gallery-notice">&#128247; Weitere Praxisfotos folgen in Kürze.</p>
     </div>
 </section>
 
@@ -538,7 +549,7 @@
             </div>
 
             <figure class="contact-photo">
-                <img src="assets/images/kontakt-rezeption.jpg" alt="Empfang der HNO-Praxis Rothenburg" loading="lazy">
+                <img src="assets/images/aerztehaus.png" alt="Empfang der HNO-Praxis Rothenburg" loading="lazy">
             </figure>
 
             <div class="contact-card">
