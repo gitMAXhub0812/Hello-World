@@ -288,8 +288,8 @@ a:hover{ color:var(--primary-md); }
       90deg,
       rgba(7, 24, 39, 0.96) 0%,
       rgba(7, 24, 39, 0.88) 30%,
-      rgba(7, 24, 39, 0.45) 55%,
-      rgba(7, 24, 39, 0.05) 100%
+      rgba(7, 24, 39, 0.55) 55%,
+      rgba(7, 24, 39, 0.38) 100%
     );
   z-index: 1;
 }
@@ -314,10 +314,11 @@ a:hover{ color:var(--primary-md); }
 
 .hero-content-premium h1 {
   font-family: "Lora", serif;
-  font-size: clamp(2.7rem, 5.6vw, 5.6rem);
-  line-height: 1.08;
+  font-size: clamp(2.4rem, 3.8vw, 4rem);
+  line-height: 1.1;
   margin: 0 0 26px;
   color: white;
+  font-weight: 600;
 }
 
 .hero-text {
