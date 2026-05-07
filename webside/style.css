@@ -304,7 +304,7 @@ a:hover{ color:var(--primary-md); }
 }
 
 .hero-eyebrow {
-  color: #f2c14e;
+  color: #D4890A;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-weight: 700;
@@ -349,14 +349,14 @@ a:hover{ color:var(--primary-md); }
 }
 
 .hero-btn-primary {
-  background: #f2c14e;
+  background: #D4890A;
   color: #071827;
-  box-shadow: 0 12px 30px rgba(242,193,78,0.3);
+  box-shadow: 0 12px 30px rgba(212,137,10,0.35);
 }
 
 .hero-btn-primary:hover {
   transform: translateY(-2px);
-  background: #ffd36a;
+  background: #E5970C;
 }
 
 .hero-btn-secondary {
