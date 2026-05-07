@@ -131,88 +131,112 @@ a:hover{ color:var(--primary-md); }
 .hero {
     position:relative;
     min-height:100vh;
-    display:flex; align-items:center;
-    overflow:hidden; color:#fff;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    color:#fff;
+    background:#08122a;   /* Fallback während Bild lädt */
 }
 
-/* Slider layers */
+/* ── Slider ── */
 .hero__slides { position:absolute; inset:0; }
 .hero__slide {
     position:absolute; inset:0;
     background-size:cover;
-    background-position:center 40%;
+    background-position:center center;
     opacity:0;
-    transition:opacity 1.8s ease;
-    transform:scale(1.03);
-    animation:slowzoom 12s ease infinite alternate;
+    transition:opacity 2s ease;
 }
 .hero__slide--active { opacity:1; }
-@keyframes slowzoom {
-    from { transform:scale(1.03); }
-    to   { transform:scale(1.00); }
-}
 
-/* Linkes Overlay – stark dunkel links, blendet nach rechts aus */
+/* ── Overlay: gleichmäßig dunkle Tönung über das gesamte Bild ── */
 .hero__overlay {
     position:absolute; inset:0;
     background:linear-gradient(
         to right,
-        rgba(6,14,32,.97)  0%,
-        rgba(6,14,32,.94) 22%,
-        rgba(6,14,32,.80) 40%,
-        rgba(6,14,32,.42) 58%,
-        rgba(6,14,32,.08) 78%,
-        transparent       100%
+        rgba(8,18,42,0.72) 0%,
+        rgba(8,18,42,0.62) 45%,
+        rgba(8,18,42,0.45) 100%
     );
 }
+
+/* ── Hero-Inhalt (links ausgerichtet) ── */
 .hero__content {
     position:relative;
-    padding:130px 0 100px;
-    max-width:620px;
+    padding:140px 0 110px;
+    max-width:600px;
 }
+
 .hero__eyebrow {
-    font-size:.72rem; font-weight:700;
-    text-transform:uppercase; letter-spacing:.16em;
-    color:#e8a020;                /* Gold – wie in der Referenz */
-    margin-bottom:1.4rem;
+    font-family:var(--font-s);
+    font-size:.7rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.18em;
+    color:#e8a020;          /* Gold exakt wie Referenz */
+    margin-bottom:1.3rem;
+    display:block;
 }
+
 .hero__title {
     font-family:var(--font-serif);
-    font-size:clamp(2.6rem,5.5vw,4.2rem);
-    font-weight:600; line-height:1.07;
-    margin-bottom:1.25rem;
-    text-shadow:0 2px 16px rgba(0,0,0,.3);
+    font-size:clamp(2.8rem,5vw,4.4rem);
+    font-weight:600;
+    line-height:1.07;
+    color:#fff;
+    margin-bottom:1.2rem;
 }
+
 .hero__sub {
     font-size:1.05rem;
-    color:rgba(255,255,255,.86);
-    max-width:480px; line-height:1.8;
-    margin-bottom:2.6rem;
+    color:rgba(255,255,255,.84);
+    line-height:1.78;
+    margin-bottom:2.8rem;
+    max-width:460px;
 }
-.hero__cta { display:flex; gap:.85rem; flex-wrap:wrap; margin-bottom:2.8rem; align-items:center; }
-.hero__cta .btn { padding:.9rem 2.2rem; font-size:.98rem; }
 
-/* Badges mit Icon + Pipe-Trenner */
+/* ── CTA-Buttons ── */
+.hero__cta {
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    flex-wrap:wrap;
+    margin-bottom:2.8rem;
+}
+.hero__cta .btn {
+    padding:.95rem 2.2rem;
+    font-size:.97rem;
+    font-weight:600;
+    border-radius:8px;
+    min-width:185px;
+    justify-content:center;
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+}
+
+/* ── Badges ── */
 .hero__badges {
     display:flex;
     align-items:center;
     gap:0;
-    flex-wrap:wrap;
 }
 .hero__badge {
     display:flex;
     align-items:center;
-    gap:.55rem;
-    font-size:.8rem; font-weight:600;
-    color:rgba(255,255,255,.82);
-    padding:0 1.4rem;
-    line-height:1.4;
+    gap:.6rem;
+    padding:0 1.5rem;
+    font-size:.8rem;
+    font-weight:600;
+    color:rgba(255,255,255,.80);
+    line-height:1.35;
 }
 .hero__badge:first-child { padding-left:0; }
-.hero__badge svg { opacity:.75; flex-shrink:0; }
+.hero__badge svg          { opacity:.70; flex-shrink:0; }
 .hero__badge-sep {
-    width:1px; height:2.2rem;
-    background:rgba(255,255,255,.22);
+    width:1px;
+    height:2.4rem;
+    background:rgba(255,255,255,.20);
     flex-shrink:0;
 }
 
