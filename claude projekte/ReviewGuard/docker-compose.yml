@@ -1,0 +1,116 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: reviewguard-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-reviewguard}
+      POSTGRES_USER: ${POSTGRES_USER:-reviewguard}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-reviewguard_secret}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/migrations/001_init.sql:/docker-entrypoint-initdb.d/001_init.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-reviewguard}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  ingestion:
+    build:
+      context: ./services/ingestion
+      dockerfile: Dockerfile
+    container_name: reviewguard-ingestion
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-reviewguard}:${POSTGRES_PASSWORD:-reviewguard_secret}@postgres:5432/${POSTGRES_DB:-reviewguard}
+      SERVICE_NAME: ingestion
+    ports:
+      - "8001:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./services/ingestion:/app
+    restart: unless-stopped
+
+  moderation:
+    build:
+      context: ./services/moderation
+      dockerfile: Dockerfile
+    container_name: reviewguard-moderation
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-reviewguard}:${POSTGRES_PASSWORD:-reviewguard_secret}@postgres:5432/${POSTGRES_DB:-reviewguard}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      AI_PROVIDER: ${AI_PROVIDER:-anthropic}
+      SERVICE_NAME: moderation
+    ports:
+      - "8002:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./services/moderation:/app
+    restart: unless-stopped
+
+  notification:
+    build:
+      context: ./services/notification
+      dockerfile: Dockerfile
+    container_name: reviewguard-notification
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-reviewguard}:${POSTGRES_PASSWORD:-reviewguard_secret}@postgres:5432/${POSTGRES_DB:-reviewguard}
+      SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      NOTIFICATION_FROM: ${NOTIFICATION_FROM:-noreply@reviewguard.local}
+      SERVICE_NAME: notification
+    ports:
+      - "8003:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  reporting:
+    build:
+      context: ./services/reporting
+      dockerfile: Dockerfile
+    container_name: reviewguard-reporting
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-reviewguard}:${POSTGRES_PASSWORD:-reviewguard_secret}@postgres:5432/${POSTGRES_DB:-reviewguard}
+      REPORTS_DIR: /app/reports
+      SERVICE_NAME: reporting
+    ports:
+      - "8004:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - reports_data:/app/reports
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: reviewguard-frontend
+    environment:
+      NEXT_PUBLIC_API_INGESTION_URL: ${NEXT_PUBLIC_API_INGESTION_URL:-http://localhost:8001}
+      NEXT_PUBLIC_API_MODERATION_URL: ${NEXT_PUBLIC_API_MODERATION_URL:-http://localhost:8002}
+      NEXT_PUBLIC_API_NOTIFICATION_URL: ${NEXT_PUBLIC_API_NOTIFICATION_URL:-http://localhost:8003}
+      NEXT_PUBLIC_API_REPORTING_URL: ${NEXT_PUBLIC_API_REPORTING_URL:-http://localhost:8004}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - ingestion
+      - moderation
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  reports_data:
