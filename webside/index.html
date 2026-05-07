@@ -45,43 +45,29 @@
 <!-- ═══════════════════════════════════════════
      HERO
 ═══════════════════════════════════════════ -->
-<section class="hero" id="home">
-    <!-- Hero Slider – neue Bilder einfach als weiteres <div class="hero__slide"> ergänzen -->
-    <div class="hero__slides" id="heroSlides">
-        <div class="hero__slide hero__slide--active" style="background-image:url('assets/images/Anmeldung.png');"></div>
-        <div class="hero__slide" style="background-image:url('assets/images/rothenburg.jpg');"></div>
+<section class="hero-premium" id="home">
+    <div class="hero-slider">
+        <div class="hero-slide active" style="background-image:url('assets/images/Anmeldung.png');"></div>
+        <div class="hero-slide" style="background-image:url('assets/images/rothenburg.jpg');"></div>
     </div>
-    <div class="hero__overlay"></div>
-    <div class="container hero__content">
-        <p class="hero__eyebrow">Fachärzte für HNO-Heilkunde &amp; Allergologie</p>
-        <h1 class="hero__title">Ihre HNO-Praxis in<br>Rothenburg ob der Tauber</h1>
-        <p class="hero__sub">Einfühlsame und kompetente Versorgung für Ohr, Nase und Hals –<br>für Patienten jeden Alters, seit 1997.</p>
-        <div class="hero__cta">
-            <a href="tel:0986179551" class="btn btn--gold">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="vertical-align:-3px;margin-right:.45rem;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6.29 6.29l.88-.88a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Jetzt anrufen
+    <div class="hero-dark"></div>
+    <div class="hero-content-premium">
+        <p class="hero-eyebrow">Fachärzte für HNO-Heilkunde &amp; Allergologie</p>
+        <h1>Ihre HNO-Praxis in<br>Rothenburg ob der Tauber</h1>
+        <p class="hero-text">Einfühlsame und kompetente Versorgung für Ohr, Nase und Hals –<br>für Patienten jeden Alters, seit 1997.</p>
+        <div class="hero-buttons">
+            <a href="tel:0986179551" class="hero-btn hero-btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right:.45rem;flex-shrink:0;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6.29 6.29l.88-.88a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Jetzt anrufen
             </a>
-            <a href="#leistungen" class="btn btn--ghost">Leistungen entdecken</a>
+            <a href="#leistungen" class="hero-btn hero-btn-secondary">Leistungen entdecken</a>
         </div>
-        <div class="hero__badges">
-            <div class="hero__badge">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                <span>Facharztpraxis<br>seit 1997</span>
-            </div>
-            <div class="hero__badge-sep"></div>
-            <div class="hero__badge">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
-                <span>Freie Arztwahl</span>
-            </div>
-            <div class="hero__badge-sep"></div>
-            <div class="hero__badge">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                <span>Alle<br>Krankenkassen</span>
-            </div>
+        <div class="hero-badges-premium">
+            <div>Facharztpraxis seit 1997</div>
+            <div>Freie Arztwahl</div>
+            <div>Alle Krankenkassen</div>
         </div>
     </div>
-    <a href="#willkommen" class="hero__scroll" aria-label="Weiter scrollen">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-    </a>
+    <a href="#willkommen" class="hero-scroll-premium" aria-label="Weiter scrollen">&#8964;</a>
 </section>
 
 <!-- ═══════════════════════════════════════════
