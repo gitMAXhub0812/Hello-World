@@ -95,8 +95,8 @@ a:hover{ color:var(--primary-md); }
 .btn--white:hover { background:#eaf3fc; border-color:#eaf3fc; color:var(--primary-dk); transform:translateY(-1px); box-shadow:0 6px 20px rgba(0,0,0,.14); }
 .btn--gold   { background:#e8a020; color:#fff; border-color:#e8a020; letter-spacing:.02em; }
 .btn--gold:hover { background:#c98a15; border-color:#c98a15; color:#fff; transform:translateY(-2px); box-shadow:0 8px 24px rgba(200,130,20,.35); }
-.btn--ghost  { background:transparent; color:#fff; border-color:rgba(255,255,255,.55); }
-.btn--ghost:hover { background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.85); color:#fff; transform:translateY(-1px); }
+.btn--ghost  { background:transparent; color:#fff; border-color:rgba(255,255,255,.80); font-weight:600; }
+.btn--ghost:hover { background:rgba(255,255,255,.10); border-color:#fff; color:#fff; transform:translateY(-1px); }
 .btn--sm     { padding:.55rem 1.3rem; font-size:.875rem; }
 
 /* ── Header ── */
@@ -152,52 +152,68 @@ a:hover{ color:var(--primary-md); }
     to   { transform:scale(1.00); }
 }
 
-/* Linkes Overlay: stark links (Textlesbarkeit), blendet rechts aus */
+/* Linkes Overlay – stark dunkel links, blendet nach rechts aus */
 .hero__overlay {
     position:absolute; inset:0;
     background:linear-gradient(
         to right,
-        rgba(6,16,36,.93)  0%,
-        rgba(6,16,36,.88) 30%,
-        rgba(6,16,36,.52) 60%,
-        rgba(6,16,36,.10) 100%
+        rgba(6,14,32,.97)  0%,
+        rgba(6,14,32,.94) 22%,
+        rgba(6,14,32,.80) 40%,
+        rgba(6,14,32,.42) 58%,
+        rgba(6,14,32,.08) 78%,
+        transparent       100%
     );
 }
 .hero__content {
     position:relative;
-    padding:120px 0 100px;
-    max-width:640px;
+    padding:130px 0 100px;
+    max-width:620px;
 }
 .hero__eyebrow {
     font-size:.72rem; font-weight:700;
     text-transform:uppercase; letter-spacing:.16em;
-    opacity:.7; margin-bottom:1.3rem;
+    color:#e8a020;                /* Gold – wie in der Referenz */
+    margin-bottom:1.4rem;
 }
 .hero__title {
     font-family:var(--font-serif);
-    font-size:clamp(2.5rem,5.5vw,4rem);
-    font-weight:600; line-height:1.08;
-    margin-bottom:1.3rem;
-    text-shadow:0 2px 12px rgba(0,0,0,.25);
+    font-size:clamp(2.6rem,5.5vw,4.2rem);
+    font-weight:600; line-height:1.07;
+    margin-bottom:1.25rem;
+    text-shadow:0 2px 16px rgba(0,0,0,.3);
 }
 .hero__sub {
-    font-size:1.08rem; opacity:.85;
-    max-width:490px; line-height:1.8;
+    font-size:1.05rem;
+    color:rgba(255,255,255,.86);
+    max-width:480px; line-height:1.8;
     margin-bottom:2.6rem;
 }
-.hero__cta { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:2.8rem; }
-.hero__cta .btn { min-width:200px; padding:.9rem 2.2rem; font-size:1rem; }
+.hero__cta { display:flex; gap:.85rem; flex-wrap:wrap; margin-bottom:2.8rem; align-items:center; }
+.hero__cta .btn { padding:.9rem 2.2rem; font-size:.98rem; }
 
-.hero__badges { display:flex; gap:.75rem; flex-wrap:wrap; }
-.hero__badge  {
-    font-size:.78rem; font-weight:600;
-    background:rgba(255,255,255,.10);
-    border:1px solid rgba(255,255,255,.20);
-    color:rgba(255,255,255,.85);
-    padding:.4rem 1rem;
-    border-radius:99px;
-    backdrop-filter:blur(6px);
-    letter-spacing:.01em;
+/* Badges mit Icon + Pipe-Trenner */
+.hero__badges {
+    display:flex;
+    align-items:center;
+    gap:0;
+    flex-wrap:wrap;
+}
+.hero__badge {
+    display:flex;
+    align-items:center;
+    gap:.55rem;
+    font-size:.8rem; font-weight:600;
+    color:rgba(255,255,255,.82);
+    padding:0 1.4rem;
+    line-height:1.4;
+}
+.hero__badge:first-child { padding-left:0; }
+.hero__badge svg { opacity:.75; flex-shrink:0; }
+.hero__badge-sep {
+    width:1px; height:2.2rem;
+    background:rgba(255,255,255,.22);
+    flex-shrink:0;
 }
 
 .hero__scroll {
@@ -537,7 +553,10 @@ a:hover{ color:var(--primary-md); }
     .hero__content { padding:80px 0 90px; }
     .hero__cta { flex-direction:column; }
     .btn { width:100%; text-align:center; }
-    .hero__badges { display:none; }
+    .hero__badges { flex-wrap:wrap; gap:.5rem; }
+    .hero__badge  { padding:0 .8rem; font-size:.74rem; }
+    .hero__badge:first-child { padding-left:0; }
+    .hero__badge-sep { height:1.6rem; }
 
     /* Philosophie */
     .pillars { grid-template-columns:1fr; }
